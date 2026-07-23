@@ -14,9 +14,10 @@ invirtiendo tiempo real.
 
 ## Estado — Fase 1 (Fundamentos)
 
-Este repo contiene el MVP en construcción por fases (ver spec). **Fase 1** está
-implementada:
+Este repo contiene el MVP en construcción por fases (ver spec). **Fases 1 y 2**
+están implementadas:
 
+**Fase 1 — Fundamentos**
 - ✅ Next.js 15 (App Router) + React 19 + TypeScript strict
 - ✅ Tailwind CSS + componentes base estilo shadcn/ui
 - ✅ Tipografía Fraunces (serif) + Manrope (sans) vía `next/font`
@@ -28,8 +29,20 @@ implementada:
 - ✅ Landing pública + layout con navegación lateral (y nav móvil)
 - ✅ **Vista Norte** editable con CRUD completo (propósito, valores, visión 75)
 
-Las vistas de fases posteriores (Hoy, Semana, Trimestre, Horizontes, Coherencia,
+**Fase 2 — Horizontes y goals**
+- ✅ Auto-creación de horizontes estándar (año, trimestre, mes, semana, hoy)
+- ✅ CRUD de goals con dimensiones (1–3) y relación padre-hijo (`parent_goal_id`)
+- ✅ **Vista Año** — apuestas anuales + dimensiones sin cubrir
+- ✅ **Vista Trimestre** — outcomes conectados a apuestas, con progreso
+- ✅ **Vista Hoy** — 3 prioridades, cadena hacia arriba, coherencia % y balance
+  dimensional del día, alerta de "sin conexión estratégica"
+
+Las vistas de fases posteriores (Semana, Mes, Horizontes, Coherencia,
 Diagnóstico…) existen como placeholders navegables.
+
+> Nota: la ruta del Año es `/dashboard/ano` (ASCII) para evitar el 404 de
+> Next.js con segmentos no-ASCII codificados; la etiqueta visible sigue siendo
+> "Año".
 
 > Nota de arquitectura: el spec describe **una** app Next.js donde Supabase es el
 > backend (Server Components consultan la base directo). Por eso todo el producto

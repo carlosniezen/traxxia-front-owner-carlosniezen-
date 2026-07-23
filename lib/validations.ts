@@ -1,4 +1,20 @@
 import { z } from "zod";
+import { DIMENSIONS } from "@/lib/dimensions";
+
+const DIMENSION_IDS = DIMENSIONS.map((d) => d.id) as [string, ...string[]];
+
+/** A goal (universal unit) — created/edited from any horizon view. */
+export const goalInputSchema = z.object({
+  horizonId: z.string().uuid(),
+  title: z.string().trim().min(1, "El título es obligatorio").max(200),
+  dimensionIds: z
+    .array(z.enum(DIMENSION_IDS))
+    .max(3, "Máximo 3 dimensiones")
+    .default([]),
+  parentGoalId: z.string().uuid().nullable().optional(),
+});
+
+export type GoalInput = z.infer<typeof goalInputSchema>;
 
 /** Norte (personal constitution) — validated on every save. */
 export const norteSchema = z.object({

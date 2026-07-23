@@ -30,11 +30,16 @@ export const NAV_SECTIONS: NavSection[] = [
   {
     title: "Horizontes",
     items: [
-      { href: "/dashboard/hoy", label: "Hoy", icon: Sun },
+      { href: "/dashboard/hoy", label: "Hoy", icon: Sun, ready: true },
       { href: "/dashboard/semana", label: "Semana", icon: CalendarDays },
       { href: "/dashboard/mes", label: "Mes", icon: CalendarRange },
-      { href: "/dashboard/trimestre", label: "Trimestre", icon: Target },
-      { href: "/dashboard/año", label: "Año", icon: Trophy },
+      {
+        href: "/dashboard/trimestre",
+        label: "Trimestre",
+        icon: Target,
+        ready: true,
+      },
+      { href: "/dashboard/ano", label: "Año", icon: Trophy, ready: true },
       { href: "/dashboard/decada", label: "Década", icon: Telescope },
       { href: "/dashboard/vida", label: "Vida", icon: BookOpen },
     ],

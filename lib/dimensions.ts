@@ -16,6 +16,10 @@ export type DimensionSeed = {
   orderIndex: number;
 };
 
+export function getDimension(id: string): DimensionSeed | undefined {
+  return DIMENSION_MAP.get(id);
+}
+
 export const DIMENSIONS: DimensionSeed[] = [
   {
     id: "S",
@@ -108,3 +112,7 @@ export const DIMENSIONS: DimensionSeed[] = [
     orderIndex: 8,
   },
 ];
+
+const DIMENSION_MAP = new Map<string, DimensionSeed>(
+  DIMENSIONS.map((d) => [d.id, d]),
+);
