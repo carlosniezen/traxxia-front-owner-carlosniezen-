@@ -1,4 +1,8 @@
 // Thin fetch wrapper for the MiTienda API (public + admin).
+// In demo mode (VITE_DEMO=1) it swaps in an in-browser localStorage backend so
+// the app runs with no server (e.g. on GitHub Pages).
+import { mockApi, mockAdmin } from './mock.js';
+const DEMO = import.meta.env.VITE_DEMO === '1' || import.meta.env.VITE_DEMO === 'true';
 const BASE = (import.meta.env.VITE_API_URL || 'http://localhost:4100') + '/api';
 
 const TOKEN_KEY = 'mitienda_admin_token';
@@ -19,7 +23,7 @@ async function request(path, { method = 'GET', body, auth = false } = {}) {
 }
 
 // --- Public storefront ---
-export const api = {
+const realApi = {
   getStore: () => request('/store'),
   getProducts: (params = {}) => {
     const qs = new URLSearchParams(Object.entries(params).filter(([, v]) => v)).toString();
@@ -31,7 +35,7 @@ export const api = {
 };
 
 // --- Admin (authenticated) ---
-export const admin = {
+const realAdmin = {
   login: (email, password) => request('/admin/login', { method: 'POST', body: { email, password } }),
   logout: () => request('/admin/logout', { method: 'POST', auth: true }),
   me: () => request('/admin/me', { auth: true }),
@@ -56,3 +60,7 @@ export const admin = {
   createCoupon: (c) => request('/admin/coupons', { method: 'POST', body: c, auth: true }),
   deleteCoupon: (id) => request(`/admin/coupons/${id}`, { method: 'DELETE', auth: true }),
 };
+
+// Use the in-browser demo backend when built with VITE_DEMO=1, else the real API.
+export const api = DEMO ? mockApi : realApi;
+export const admin = DEMO ? mockAdmin : realAdmin;
