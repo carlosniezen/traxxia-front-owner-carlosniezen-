@@ -1,3 +1,4 @@
+// BienTomado API client.
 const BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
 
 async function request(path, options = {}) {
@@ -12,20 +13,22 @@ async function request(path, options = {}) {
   return res.json();
 }
 
-export const getAgenda = () => request('/agenda');
-export const updatePillar = (id, data) =>
-  request(`/pillars/${id}`, { method: 'PUT', body: JSON.stringify(data) });
-export const createInitiative = (data) =>
-  request('/initiatives', { method: 'POST', body: JSON.stringify(data) });
-export const updateInitiative = (id, data) =>
-  request(`/initiatives/${id}`, { method: 'PUT', body: JSON.stringify(data) });
-export const deleteInitiative = (id) =>
-  request(`/initiatives/${id}`, { method: 'DELETE' });
-export const getAgendaItems = (date) =>
-  request(`/agenda-items?date=${encodeURIComponent(date)}`);
-export const createAgendaItem = (data) =>
-  request('/agenda-items', { method: 'POST', body: JSON.stringify(data) });
-export const updateAgendaItem = (id, data) =>
-  request(`/agenda-items/${id}`, { method: 'PUT', body: JSON.stringify(data) });
-export const deleteAgendaItem = (id) =>
-  request(`/agenda-items/${id}`, { method: 'DELETE' });
+export const getProfile = () => request('/profile');
+export const saveProfile = (data) =>
+  request('/profile', { method: 'PUT', body: JSON.stringify(data) });
+
+export const getCategories = () => request('/categories');
+
+export const logDrink = (data) =>
+  request('/logs', { method: 'POST', body: JSON.stringify(data) });
+export const getLogs = (days = 30) => request(`/logs?days=${days}`);
+export const deleteLog = (id) => request(`/logs/${id}`, { method: 'DELETE' });
+
+export const getPendingCheckins = () => request('/checkins/pending');
+export const submitCheckin = (data) =>
+  request('/checkins', { method: 'POST', body: JSON.stringify(data) });
+
+export const getTolerance = () => request('/tolerance');
+export const getRecommendation = (data) =>
+  request('/recommend', { method: 'POST', body: JSON.stringify(data) });
+export const getDashboard = () => request('/dashboard');
