@@ -37,8 +37,23 @@ están implementadas:
 - ✅ **Vista Hoy** — 3 prioridades, cadena hacia arriba, coherencia % y balance
   dimensional del día, alerta de "sin conexión estratégica"
 
-Las vistas de fases posteriores (Semana, Mes, Horizontes, Coherencia,
-Diagnóstico…) existen como placeholders navegables.
+**Fase 3 — Horizontes maestra**
+- ✅ **Vista Horizontes** — los 7 niveles en una pantalla, resaltado de la cadena
+  al pasar el cursor, filtro por dimensión y toggles de mostrar/ocultar niveles
+
+**Fase 4 — Diagnóstico y Coherencia**
+- ✅ **Diagnóstico** — 27 preguntas Likert, score por dimensión, fortalezas,
+  brechas e historial
+- ✅ **Coherencia** — radar S.T.R.A.T.E.G.I.C. (recharts), distribución del año y
+  del día, y cadena rota (goals huérfanos)
+
+**Demo**
+- ✅ **"Entrar como demo"** — acceso de un clic a una cuenta sembrada y rica
+  (`npm run db:seed:demo`), ideal para mostrar en vivo. Ver [`DEPLOY.md`](./DEPLOY.md).
+
+Las vistas restantes (Semana, Mes, Década, Vida) existen como placeholders
+navegables. Pendiente de fases posteriores: onboarding guiado, toggle es/en,
+analytics.
 
 > Nota: la ruta del Año es `/dashboard/ano` (ASCII) para evitar el 404 de
 > Next.js con segmentos no-ASCII codificados; la etiqueta visible sigue siendo

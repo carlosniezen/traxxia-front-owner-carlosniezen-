@@ -1,10 +1,12 @@
-import { and, eq, inArray } from "drizzle-orm";
+import { and, eq, inArray, isNull } from "drizzle-orm";
 import { db } from "@/lib/db";
 import {
   goals,
   goalDimensions,
+  horizons,
   type Goal,
 } from "@/lib/db/schema";
+import type { HorizonKind } from "@/lib/horizons";
 
 export type EnrichedGoal = Goal & { dimensionIds: string[] };
 
@@ -89,6 +91,48 @@ export async function getGoalChain(
     parentId = parent[0].parentGoalId ?? null;
   }
   return attachDimensions(chain);
+}
+
+/** Orphan goals: active goals in sub-annual horizons with no parent link. */
+export type OrphanGoal = {
+  id: string;
+  title: string;
+  kind: HorizonKind;
+};
+
+export async function getOrphanGoals(userId: string): Promise<OrphanGoal[]> {
+  const rows = await db
+    .select({
+      id: goals.id,
+      title: goals.title,
+      kind: horizons.kind,
+    })
+    .from(goals)
+    .innerJoin(horizons, eq(goals.horizonId, horizons.id))
+    .where(
+      and(
+        eq(goals.userId, userId),
+        isNull(goals.parentGoalId),
+        eq(goals.status, "active"),
+        inArray(horizons.kind, ["day", "week", "month", "quarter"]),
+      ),
+    );
+  return rows;
+}
+
+/** All active goals with their horizon kind — used by the master Horizontes view. */
+export type GraphGoal = EnrichedGoal & { kind: HorizonKind };
+
+export async function getGoalGraph(userId: string): Promise<GraphGoal[]> {
+  const rows = await db
+    .select({ goal: goals, kind: horizons.kind })
+    .from(goals)
+    .innerJoin(horizons, eq(goals.horizonId, horizons.id))
+    .where(eq(goals.userId, userId));
+
+  const enriched = await attachDimensions(rows.map((r) => r.goal));
+  const kindById = new Map(rows.map((r) => [r.goal.id, r.kind]));
+  return enriched.map((g) => ({ ...g, kind: kindById.get(g.id)! }));
 }
 
 /** Lightweight option list (id + title) for parent-connection dropdowns. */

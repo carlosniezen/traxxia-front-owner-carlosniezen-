@@ -1,6 +1,7 @@
 "use server";
 
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { loginSchema } from "@/lib/validations";
 
@@ -41,4 +42,19 @@ export async function sendMagicLink(
   }
 
   return { status: "sent", email: parsed.data.email };
+}
+
+/** One-click demo sign-in (password grant). Only wired when demo is enabled. */
+export async function enterDemo(): Promise<{ ok: boolean; error?: string }> {
+  const email = process.env.DEMO_EMAIL;
+  const password = process.env.DEMO_PASSWORD;
+  if (!email || !password) {
+    return { ok: false, error: "El modo demo no está configurado" };
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  if (error) return { ok: false, error: error.message };
+
+  redirect("/dashboard");
 }

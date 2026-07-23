@@ -47,12 +47,23 @@ export const NAV_SECTIONS: NavSection[] = [
   {
     title: "Estrategia",
     items: [
-      { href: "/dashboard/horizontes", label: "Horizontes", icon: Layers },
-      { href: "/dashboard/coherencia", label: "Coherencia", icon: Compass },
+      {
+        href: "/dashboard/horizontes",
+        label: "Horizontes",
+        icon: Layers,
+        ready: true,
+      },
+      {
+        href: "/dashboard/coherencia",
+        label: "Coherencia",
+        icon: Compass,
+        ready: true,
+      },
       {
         href: "/dashboard/diagnostico",
         label: "Diagnóstico",
         icon: ClipboardCheck,
+        ready: true,
       },
       { href: "/dashboard/norte", label: "Norte", icon: Compass, ready: true },
     ],
