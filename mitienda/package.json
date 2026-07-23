@@ -1,0 +1,21 @@
+{
+  "name": "mitienda-front",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "MiTienda.pe-style storefront + merchant admin (React + Vite)",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:demo": "VITE_DEMO=1 vite build --base=./",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^6.0.5"
+  }
+}
