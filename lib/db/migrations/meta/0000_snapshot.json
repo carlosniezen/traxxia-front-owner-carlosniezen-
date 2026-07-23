@@ -1,0 +1,634 @@
+{
+  "id": "9079c04a-2833-4072-b91d-8a230dc191ca",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.diagnostics": {
+      "name": "diagnostics",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "scope": {
+          "name": "scope",
+          "type": "diagnostic_scope",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'personal'"
+        },
+        "scores": {
+          "name": "scores",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "answers": {
+          "name": "answers",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "taken_at": {
+          "name": "taken_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "diagnostics_user_id_users_id_fk": {
+          "name": "diagnostics_user_id_users_id_fk",
+          "tableFrom": "diagnostics",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.dimensions": {
+      "name": "dimensions",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "letter": {
+          "name": "letter",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name_es": {
+          "name": "name_es",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name_en": {
+          "name": "name_en",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "blurb_es": {
+          "name": "blurb_es",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "blurb_en": {
+          "name": "blurb_en",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "color": {
+          "name": "color",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "order_index": {
+          "name": "order_index",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.goal_dimensions": {
+      "name": "goal_dimensions",
+      "schema": "",
+      "columns": {
+        "goal_id": {
+          "name": "goal_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "dimension_id": {
+          "name": "dimension_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "weight": {
+          "name": "weight",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 1
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "goal_dimensions_goal_id_goals_id_fk": {
+          "name": "goal_dimensions_goal_id_goals_id_fk",
+          "tableFrom": "goal_dimensions",
+          "tableTo": "goals",
+          "columnsFrom": [
+            "goal_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "goal_dimensions_dimension_id_dimensions_id_fk": {
+          "name": "goal_dimensions_dimension_id_dimensions_id_fk",
+          "tableFrom": "goal_dimensions",
+          "tableTo": "dimensions",
+          "columnsFrom": [
+            "dimension_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "goal_dimensions_goal_id_dimension_id_pk": {
+          "name": "goal_dimensions_goal_id_dimension_id_pk",
+          "columns": [
+            "goal_id",
+            "dimension_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.goals": {
+      "name": "goals",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "horizon_id": {
+          "name": "horizon_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "parent_goal_id": {
+          "name": "parent_goal_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "goal_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'active'"
+        },
+        "completed_at": {
+          "name": "completed_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "goals_user_id_users_id_fk": {
+          "name": "goals_user_id_users_id_fk",
+          "tableFrom": "goals",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "goals_horizon_id_horizons_id_fk": {
+          "name": "goals_horizon_id_horizons_id_fk",
+          "tableFrom": "goals",
+          "tableTo": "horizons",
+          "columnsFrom": [
+            "horizon_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "goals_parent_goal_id_goals_id_fk": {
+          "name": "goals_parent_goal_id_goals_id_fk",
+          "tableFrom": "goals",
+          "tableTo": "goals",
+          "columnsFrom": [
+            "parent_goal_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.horizons": {
+      "name": "horizons",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "kind": {
+          "name": "kind",
+          "type": "horizon_kind",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "label": {
+          "name": "label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "start_date": {
+          "name": "start_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "end_date": {
+          "name": "end_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "horizons_user_id_users_id_fk": {
+          "name": "horizons_user_id_users_id_fk",
+          "tableFrom": "horizons",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.norte": {
+      "name": "norte",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "proposito": {
+          "name": "proposito",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "valores": {
+          "name": "valores",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'[]'::jsonb"
+        },
+        "vision_75": {
+          "name": "vision_75",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "norte_user_id_users_id_fk": {
+          "name": "norte_user_id_users_id_fk",
+          "tableFrom": "norte",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "norte_user_id_unique": {
+          "name": "norte_user_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "user_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.templates": {
+      "name": "templates",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "kind": {
+          "name": "kind",
+          "type": "template_kind",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "structure": {
+          "name": "structure",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "is_system": {
+          "name": "is_system",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.users": {
+      "name": "users",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "full_name": {
+          "name": "full_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "locale": {
+          "name": "locale",
+          "type": "locale",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'es'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "users_email_unique": {
+          "name": "users_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "email"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "public.diagnostic_scope": {
+      "name": "diagnostic_scope",
+      "schema": "public",
+      "values": [
+        "personal",
+        "enterprise"
+      ]
+    },
+    "public.goal_status": {
+      "name": "goal_status",
+      "schema": "public",
+      "values": [
+        "active",
+        "completed",
+        "abandoned"
+      ]
+    },
+    "public.horizon_kind": {
+      "name": "horizon_kind",
+      "schema": "public",
+      "values": [
+        "life",
+        "decade",
+        "year",
+        "quarter",
+        "month",
+        "week",
+        "day"
+      ]
+    },
+    "public.locale": {
+      "name": "locale",
+      "schema": "public",
+      "values": [
+        "es",
+        "en"
+      ]
+    },
+    "public.template_kind": {
+      "name": "template_kind",
+      "schema": "public",
+      "values": [
+        "quarterly_review",
+        "annual_planning",
+        "weekly_review",
+        "decision_filter"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
