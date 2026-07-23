@@ -21,3 +21,11 @@ export const updateInitiative = (id, data) =>
   request(`/initiatives/${id}`, { method: 'PUT', body: JSON.stringify(data) });
 export const deleteInitiative = (id) =>
   request(`/initiatives/${id}`, { method: 'DELETE' });
+export const getAgendaItems = (date) =>
+  request(`/agenda-items?date=${encodeURIComponent(date)}`);
+export const createAgendaItem = (data) =>
+  request('/agenda-items', { method: 'POST', body: JSON.stringify(data) });
+export const updateAgendaItem = (id, data) =>
+  request(`/agenda-items/${id}`, { method: 'PUT', body: JSON.stringify(data) });
+export const deleteAgendaItem = (id) =>
+  request(`/agenda-items/${id}`, { method: 'DELETE' });

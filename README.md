@@ -1,12 +1,13 @@
 # Traxxia — Strategic Agenda (front-end)
 
-A client-facing strategic agenda app built on the **S.T.R.A.T.E.G.I.C.** framework
-(*Mentalidad Estratégica 2.0*). Strategic priorities are captured as **strategic
-bets** — each with an owner, hypothesis, expected result, status and due date —
-organized under the framework's nine pillars.
+A personal agenda app built on the **S.T.R.A.T.E.G.I.C.** framework
+(*Mentalidad Estratégica 2.0*). Every block of your day is tagged to the pillar
+it serves — Strategies, Tactics, Resources, Analytics and Data, Technology,
+Execution, Governance, Innovation, Culture — so you can see at a glance whether
+your calendar is actually serving your strategy.
 
-The nine pillar names/descriptions ship as editable defaults: click ✎ on any
-pillar to align the wording with the model.
+A second tab tracks **strategic bets** (owner, hypothesis, expected result,
+status, due date) organized under the same nine pillars.
 
 ## Stack
 
@@ -27,8 +28,14 @@ To point at a different API, set `VITE_API_URL` (defaults to `http://localhost:4
 
 ## Features
 
-- **Pillar board** — all 9 STRATEGIC pillars with their bets at a glance
-- **Strategic bets** — create/edit with owner, hypothesis, expected result, due date, notes
-- **Status tracking** — Idea → Planned → In Progress → At Risk → Done, changeable inline
-- **Summary bar** — portfolio counts by status
-- **Editable framework wording** — rename pillars and descriptions in place
+**My Agenda (default tab)**
+- Daily agenda with date navigation, time slots, and done checkboxes
+- Each item tagged to the STRATEGIC pillar it serves (or "no pillar")
+- **"Where your time goes"** — a live bar showing scheduled time split across
+  pillars, with un-strategic time called out
+
+**Strategic Bets**
+- Pillar board with all 9 STRATEGIC pillars and their bets at a glance
+- Create/edit bets with owner, hypothesis, expected result, due date, notes
+- Status tracking: Idea → Planned → In Progress → At Risk → Done, changeable inline
+- Editable pillar wording (✎) — though it now ships with the model's official definitions

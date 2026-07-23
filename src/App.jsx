@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   getAgenda, updatePillar, createInitiative, updateInitiative, deleteInitiative,
 } from './api.js';
+import AgendaView from './AgendaView.jsx';
 
 const STATUSES = ['Idea', 'Planned', 'In Progress', 'At Risk', 'Done'];
 
@@ -187,6 +188,7 @@ export default function App() {
   const [pillars, setPillars] = useState(null);
   const [loadError, setLoadError] = useState(null);
   const [formState, setFormState] = useState(null); // {pillar_id, ...initiative?}
+  const [tab, setTab] = useState('agenda');
 
   const refresh = () =>
     getAgenda().then((d) => { setPillars(d); setLoadError(null); })
@@ -211,10 +213,18 @@ export default function App() {
         <div>
           <h1>Traxxia <span className="thin">| Strategic Agenda</span></h1>
           <p className="tagline">
-            Your priorities as strategic bets, organized by the S.T.R.A.T.E.G.I.C. pillars.
-            Pillar wording is editable (✎) — align it with your model.
+            Your day, aligned with the S.T.R.A.T.E.G.I.C. model — every block of time
+            tagged to the pillar it serves.
           </p>
         </div>
+        <nav className="tabs">
+          <button className={tab === 'agenda' ? 'tab active' : 'tab'} onClick={() => setTab('agenda')}>
+            My Agenda
+          </button>
+          <button className={tab === 'bets' ? 'tab active' : 'tab'} onClick={() => setTab('bets')}>
+            Strategic Bets
+          </button>
+        </nav>
       </header>
 
       {loadError && (
@@ -224,29 +234,33 @@ export default function App() {
         </div>
       )}
 
-      {pillars && <SummaryBar pillars={pillars} />}
+      {pillars && tab === 'agenda' && <AgendaView pillars={pillars} />}
 
-      <main className="board">
-        {pillars?.map((pillar) => (
-          <section className="pillar" key={pillar.id}>
-            <PillarHeader pillar={pillar} onSaved={refresh} />
-            <div className="cards">
-              {pillar.initiatives.map((i) => (
-                <InitiativeCard
-                  key={i.id}
-                  initiative={i}
-                  onEdit={() => setFormState(i)}
-                  onDelete={() => remove(i)}
-                  onStatus={(s) => setStatus(i, s)}
-                />
-              ))}
-              <button className="btn add" onClick={() => setFormState({ pillar_id: pillar.id })}>
-                + Add strategic bet
-              </button>
-            </div>
-          </section>
-        ))}
-      </main>
+      {pillars && tab === 'bets' && <SummaryBar pillars={pillars} />}
+
+      {tab === 'bets' && (
+        <main className="board">
+          {pillars?.map((pillar) => (
+            <section className="pillar" key={pillar.id}>
+              <PillarHeader pillar={pillar} onSaved={refresh} />
+              <div className="cards">
+                {pillar.initiatives.map((i) => (
+                  <InitiativeCard
+                    key={i.id}
+                    initiative={i}
+                    onEdit={() => setFormState(i)}
+                    onDelete={() => remove(i)}
+                    onStatus={(s) => setStatus(i, s)}
+                  />
+                ))}
+                <button className="btn add" onClick={() => setFormState({ pillar_id: pillar.id })}>
+                  + Add strategic bet
+                </button>
+              </div>
+            </section>
+          ))}
+        </main>
+      )}
 
       {formState && (
         <InitiativeForm
