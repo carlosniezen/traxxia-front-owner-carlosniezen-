@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Design tokens — Traxxia Personal
+ * Values are "H S% L%" triplets consumed via hsl(var(--token)) in tailwind.config.ts.
+ * Dark is the default (executive, frequent night use); .light is the "premium book" theme.
+ */
+@layer base {
+  :root,
+  .dark {
+    --background: 217 22% 7%; /* #0E1116 */
+    --surface: 215 21% 11%; /* #161B22 */
+    --surface-elevated: 216 18% 13%; /* #1C2128 */
+    --border: 219 14% 19%; /* #2A2F38 */
+    --text-primary: 36 43% 93%; /* #F5EFE6 cream */
+    --text-secondary: 38 14% 75%; /* #C9C3B8 */
+    --text-muted: 34 10% 38%; /* #6B6358 */
+    --accent-sienna: 15 71% 42%; /* #B8451F */
+    --accent-amber: 31 53% 64%; /* #D4A574 */
+    --success: 153 33% 53%; /* #5EAE8A */
+  }
+
+  .light {
+    --background: 38 45% 95%; /* warm paper */
+    --surface: 38 50% 97%;
+    --surface-elevated: 40 40% 99%;
+    --border: 37 30% 85%;
+    --text-primary: 30 14% 14%;
+    --text-secondary: 33 12% 33%;
+    --text-muted: 34 10% 50%;
+    --accent-sienna: 15 71% 42%;
+    --accent-amber: 31 48% 46%;
+    --success: 153 37% 38%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "ss01", "cv01";
+  }
+
+  /* Editorial defaults: serif headings breathe */
+  h1,
+  h2,
+  h3 {
+    @apply font-serif font-light tracking-tight;
+  }
+
+  ::selection {
+    background: hsl(var(--accent-amber) / 0.3);
+  }
+}
+
+@layer utilities {
+  .text-secondary {
+    color: hsl(var(--text-secondary));
+  }
+  .text-muted-token {
+    color: hsl(var(--text-muted));
+  }
+  /* Large reflective numbers / display type */
+  .display {
+    @apply font-serif font-light tracking-tight;
+  }
+}
